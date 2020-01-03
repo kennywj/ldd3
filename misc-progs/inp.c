@@ -32,15 +32,17 @@
 
 #include <sys/io.h> /* linux-specific */
 
-#ifdef __GLIBC__
-#  include <sys/perm.h>
-#endif
+
 
 #define PORT_FILE "/dev/port"
 
 char *prgname;
 
 #ifdef __i386__
+
+#ifdef __GLIBC__
+#  include <sys/perm.h>
+#endif
 static int read_and_print_one(unsigned int port,int size)
 {
     static int iopldone = 0;
