@@ -9,7 +9,8 @@ else
   DEBFLAGS = -O2
 endif
 
-LDDINC=$(PWD)
+LDDINC=$(PWD)/../include
+
 EXTRA_CFLAGS += $(DEBFLAGS) -I$(LDDINC)
 
 TARGET = sculld
