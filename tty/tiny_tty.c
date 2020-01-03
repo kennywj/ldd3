@@ -26,6 +26,7 @@
 #include <linux/sched/signal.h>
 #include <linux/seq_file.h>
 #include <linux/uaccess.h>
+#include <linux/version.h>
 
 #define DRIVER_VERSION "v2.0"
 #define DRIVER_AUTHOR "Greg Kroah-Hartman <greg@kroah.com>"
@@ -347,6 +348,7 @@ static int tiny_tiocmset(struct tty_struct *tty, unsigned int set,
 	return 0;
 }
 
+#if LINUX_VERSION_CODE > KERNEL_VERSION(4,18,0)
 static int tiny_proc_show(struct seq_file *m, void *v)
 {
 	struct tiny_serial *tiny;
@@ -363,6 +365,7 @@ static int tiny_proc_show(struct seq_file *m, void *v)
 
 	return 0;
 }
+#endif
 
 #define tiny_ioctl tiny_ioctl_tiocgserial
 static int tiny_ioctl(struct tty_struct *tty, unsigned int cmd,
@@ -492,7 +495,9 @@ static const struct tty_operations serial_ops = {
 	.write = tiny_write,
 	.write_room = tiny_write_room,
 	.set_termios = tiny_set_termios,
+#if LINUX_VERSION_CODE > KERNEL_VERSION(4,18,0)
 	.proc_show = tiny_proc_show,
+#endif	
 	.tiocmget = tiny_tiocmget,
 	.tiocmset = tiny_tiocmset,
 	.ioctl = tiny_ioctl,
